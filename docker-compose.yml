@@ -33,8 +33,7 @@ services:
     ports:
       - "9090:9090"  # Порт для интерфейса Prometheus
     restart: unless-stopped
-    networks:
-      - monitoring
+    network_mode: host
 
   grafana:
     image: grafana/grafana:latest
@@ -58,8 +57,6 @@ services:
       - "9100:9100"  # Порт для метрик с хостовой машины
     restart: unless-stopped
     network_mode: host  # Для доступа к меткам хоста
-    networks:
-      - monitoring
 
   # Сервис для cAdvisor (мониторинг Docker контейнеров)
   cadvisor:
@@ -69,12 +66,6 @@ services:
       - "8080:8080"  # Порт для метрик контейнеров
     restart: unless-stopped
     network_mode: host  # Для доступа к Docker контейнерам
-    networks:
-      - monitoring
-
-networks:
-  monitoring:
-    driver: bridge
 
 volumes:
   prometheus_data:
