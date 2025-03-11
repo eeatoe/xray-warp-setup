@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s  # Интервал сбора метрик
+
+scrape_configs:
+  # Мониторинг Xray через его экспортируемые метрики
+  - job_name: 'xray'
+    static_configs:
+      - targets: ['xray_container_ip:10085']
+    metrics_path: '/metrics'
+
+  # Мониторинг хостовой машины через Node Exporter
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['host_machine_ip:9100']
+
+  # Мониторинг Docker контейнеров через cAdvisor
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['docker_host_ip:8080']

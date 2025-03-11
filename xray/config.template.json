@@ -1,0 +1,69 @@
+{
+  "log": {
+    "loglevel": "info"
+  },
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:ru"
+        ]
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "port": 443,
+      "protocol": "vless",
+      "tag": "vless_tls",
+      "settings": {
+        "clients": [
+          
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "${DISGUISE_SITE}:443",
+          "xver": 0,
+          "serverNames": [
+            "${DISGUISE_SITE}"
+          ],
+          "privateKey": "${PRIVATE_KEY}",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": [
+            "${SHORTIDS}"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ],
+  "metrics": {
+    "enabled": true,
+    "address": "0.0.0.0",
+    "port": 10085,
+    "path": "/metrics"
+  }
+}
